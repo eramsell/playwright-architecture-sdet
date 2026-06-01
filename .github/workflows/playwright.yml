@@ -34,7 +34,7 @@ jobs:
 
     # Paso 5: Levantar tu servidor Express en segundo plano antes de los tests
     - name: Arrancar Servidor Local de la Aplicación
-      run: node ../mi-app-local/server.js & # El '&' hace que corra en segundo plano sin bloquear la terminal
+      run: node server.js & # El '&' hace que corra en segundo plano sin bloquear la terminal
       env:
         PORT: 3000
 

@@ -1,0 +1,52 @@
+name: Playwright Tests (CI/CD Pipeline)
+
+# Aquí es donde le decimos a GitHub cuándo despertar
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    # El sistema operativo virtual que usará GitHub en la nube
+    runs-on: ubuntu-latest
+
+    steps:
+    # Paso 1: Descargar el código de nuestro repositorio
+    - name: Cargar el repositorio
+      uses: actions/checkout@v4
+
+    # Paso 2: Instalar Node.js en la máquina virtual
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    # Paso 3: Instalar las dependencias de nuestro proyecto (Express, Playwright, etc.)
+    - name: Instalar dependencias
+      run: npm ci
+
+    # Paso 4: Instalar los navegadores invisibles (Chromium, Firefox, WebKit) dentro de Linux
+    - name: Instalar Navegadores de Playwright
+      run: npx playwright install --with-deps
+
+    # Paso 5: Levantar tu servidor Express en segundo plano antes de los tests
+    - name: Arrancar Servidor Local de la Aplicación
+      run: node ../mi-app-local/server.js & # El '&' hace que corra en segundo plano sin bloquear la terminal
+      env:
+        PORT: 3000
+
+    # Paso 6: ¡Lanzar la suite de pruebas completa de manera síncrona!
+    - name: Ejecutar Tests de Playwright
+      run: npx playwright test
+
+    # Paso 7: Si algo falla, rescatar y guardar el reporte HTML como un artefacto descargable
+    - name: Subir Reporte en caso de fallo
+      if: always() # Se ejecuta aunque los pasos anteriores hayan fallado
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

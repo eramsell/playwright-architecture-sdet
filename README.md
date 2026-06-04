@@ -55,7 +55,7 @@ npm
 
 1. Clonar el repositorio e instalar dependencias
 Bash
-git clone [https://github.com/TU_USUARIO_DE_GITHUB/TU_REPOSITORIO.git](https://github.com/TU_USUARIO_DE_GITHUB/TU_REPOSITORIO.git)
+git clone [https://github.com/eramsell/playwright-architecture-sdet.git](https://github.com/eramsell/playwright-architecture-sdet.git)
 cd TU_REPOSITORIO
 npm install
 2. Arrancar el Servidor de la Aplicación
